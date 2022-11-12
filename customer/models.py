@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Customer(models.Model):
     # user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='details', verbose_name='User', primary_key=True)
     
@@ -13,9 +14,21 @@ class Customer(models.Model):
     image = models.ImageField(upload_to='images', default='/images/avatar.jpg')
 
     def __str__(self):
-        return f'{str(self.user)} Details'
+        return f'{self.first_name} {self.last_name}'
 
     @property
     def full_name(self):
         x = f'{self.user.firtname} {self.user.lastname}'
         return x
+
+
+# To create api token automatically when a new user created
+# from django.conf import settings
+# from django.db.models.signals import post_save
+# from django.dispatch import receiver
+# from rest_framework.authtoken.models import Token
+
+# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
+# def create_auth_token(sender, instance=None, created=False, **kwargs):
+#     if created:
+#         Token.objects.create(user=instance)
