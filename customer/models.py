@@ -7,8 +7,9 @@ class Customer(models.Model):
     first_name = models.CharField('First Name', max_length=50)
     last_name = models.CharField('Last Name', max_length=50)
     contact = models.CharField('Contact', max_length=50, blank=True)
+    email = models.EmailField('Email', blank=True)
     biography = models.TextField('Biography', blank=True)
-    steet_address = models.TextField('Steet Address', blank=True)
+    street_address = models.TextField('Steet Address', blank=True)
     area = models.TextField('Area', blank=True)
     city = models.TextField('City', blank=True)
     image = models.ImageField(upload_to='images', default='/images/avatar.jpg')
@@ -18,7 +19,7 @@ class Customer(models.Model):
 
     @property
     def full_name(self):
-        x = f'{self.user.firtname} {self.user.lastname}'
+        x = f'{self.first_name} {self.last_name}'
         return x
 
 
