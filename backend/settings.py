@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'customer',
+    'theme',
+    'colorfield',
+    'connection',
 
 ]
 
