@@ -1,5 +1,5 @@
 from django.db import models
-
+# from connection.models import Connection
 
 class Customer(models.Model):
     # user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='details', verbose_name='User', primary_key=True)
@@ -22,6 +22,11 @@ class Customer(models.Model):
         x = f'{self.first_name} {self.last_name}'
         return x
 
+    # def save(self, *args, **kwargs):
+    #     is_new = True if not self.id else False
+    #     super(self).save(*args, **kwargs)
+    #     if is_new:
+    #         Connection.objects.create(customer=self.id)
 
 # To create api token automatically when a new user created
 # from django.conf import settings

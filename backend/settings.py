@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'theme',
     'colorfield',
     'connection',
-
+    'django_filters',
+    'location',
 ]
 
 MIDDLEWARE = [
@@ -131,7 +132,11 @@ REST_FRAMEWORK = {
         'anon':'5/day',
         'user':'100/hour',
         'customer':'20/minute'
-    }
+    },
+
+    'DEFAULT_FILTER_BACKENDS':[
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ]
 }
 
 # json web token settings

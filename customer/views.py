@@ -16,5 +16,3 @@ class CustomerViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     # throttle_classes = [UserRateThrottle, CustomerRateThrottle]
     throttle_classes = [CustomerRateThrottle]
-
-
