@@ -5,8 +5,8 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 
 router.register('connectionapi', views.ConnectionViewSet, basename='connection')
+router.register('connectionapirelated', views.ConnectionViewSetRelated, basename='connectionrelated')
 
 urlpatterns = [
-    # path('', views.home, name='home'),
     path('', include(router.urls)),
 ]

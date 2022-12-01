@@ -12,21 +12,41 @@ class SubAreaSerializer(serializers.ModelSerializer):
         fields = ['id', 'subarea']
 
 class AreaSerializer(serializers.ModelSerializer):
-    subareas = SubAreaSerializer(many=True)
-
     class Meta:
         model = Area
-        fields = ['id', 'area', 'subareas']
+        fields = '__all__'
+
 
 class CitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = City
+        fields = '__all__'
+
+class CitySerializerRelated(serializers.ModelSerializer):
+    country = CountrySerializer(read_only=True)
     areas = AreaSerializer(many=True)
 
     class Meta:
         model = City
-        fields = ['id', 'city', 'areas']
+        fields = ['id', 'city', 'areas', 'country']
+
+class CitySerializerForArea(serializers.ModelSerializer):
+    country = CountrySerializer(read_only=True)
+
+    class Meta:
+        model = City
+        fields = ['id', 'city', 'country']
+
+class AreaSerializerRelated(serializers.ModelSerializer):
+    city = CitySerializerForArea(read_only=True)
+    subareas = SubAreaSerializer(many=True)
+
+    class Meta:
+        model = Area
+        fields = ['id', 'area', 'subareas', 'city']
 
 class LocationSerializer(serializers.ModelSerializer):
-    cities = CitySerializer(many=True)
+    cities = CitySerializerRelated(many=True)
 
     class Meta:
         model = Country
