@@ -1,5 +1,6 @@
 from django.db import models
 # from connection.models import Connection
+from location.models import SubArea
 
 class Customer(models.Model):
     # user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='details', verbose_name='User', primary_key=True)
@@ -10,9 +11,7 @@ class Customer(models.Model):
     email = models.EmailField('Email', blank=True)
     biography = models.TextField('Biography', blank=True)
     street_address = models.TextField('Steet Address', blank=True)
-    area = models.TextField('Area', blank=True)
-    city = models.TextField('City', blank=True)
-    image = models.ImageField(upload_to='images', default='/images/avatar.jpg')
+    subarea = models.ForeignKey(SubArea, on_delete=models.CASCADE, related_name='customers', verbose_name='Sub Area')
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'

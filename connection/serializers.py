@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Connection
 from customer.models import Customer
 from customer.serializers import CustomerSerializer
+from location.serializers import SubAreaSerializer
 
 
 class ConnectionSerializer(serializers.ModelSerializer):   
@@ -11,7 +12,8 @@ class ConnectionSerializer(serializers.ModelSerializer):
 
 class ConnectionSerializerRelated(serializers.ModelSerializer):
     customer = CustomerSerializer(many=False)
+    subarea = SubAreaSerializer(many=False)
     
     class Meta:
         model = Connection
-        fields = ['id', 'connection_id', 'installation_date', 'package', 'status', 'new', 'customer']
+        fields = ['id', 'connection_id', 'installation_date', 'subarea', 'package', 'status', 'new', 'customer']

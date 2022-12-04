@@ -1,21 +1,11 @@
 from django.shortcuts import render
 from .models import Country, City, Area, SubArea
-from .serializers import CountrySerializer, CitySerializer, CitySerializerRelated, AreaSerializer, AreaSerializerRelated, SubAreaSerializer, LocationSerializer
+from .serializers import CountrySerializer, CitySerializer, CitySerializerRelated, AreaSerializer, AreaSerializerRelated, SubAreaSerializer, SubAreaSerializerRelated
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
-from django.db.models import F
-
-
-class LocationViewSet(viewsets.ModelViewSet):
-    queryset = Country.objects.all()
-    serializer_class = LocationSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    search_fields = ['country']
 
 
 class CountryViewSet(viewsets.ModelViewSet):
@@ -42,6 +32,7 @@ class CityViewSetRelated(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['country']
     search_fields = ['city', 'country__country']
+    ordering_fields = ['city', 'country__country']
 
 
 class AreaViewSet(viewsets.ModelViewSet):
@@ -57,7 +48,9 @@ class AreaViewSetRelated(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    search_fields = ['city__city', 'city__country__country', 'area']
+    filterset_fields = ['city']
+    search_fields = ['area', 'city__city', 'city__country__country']
+    ordering_fields = ['area', 'city__city', 'city__country__country']
 
 
 class SubAreaViewSet(viewsets.ModelViewSet):
@@ -66,3 +59,12 @@ class SubAreaViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+
+class SubAreaViewSetRelated(viewsets.ModelViewSet):
+    queryset = SubArea.objects.all()
+    serializer_class = SubAreaSerializerRelated
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    search_fields = ['subarea', 'area__area', 'area__city__city', 'area__city__country__country']
+    ordering_fields = ['subarea', 'area__area', 'area__city__city', 'area__city__country__country']
