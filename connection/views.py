@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q, F
 from django_filters.rest_framework import DjangoFilterBackend 
 from rest_framework.filters import SearchFilter, OrderingFilter
+from customizations.pagination import CustomPagination
 
 # from rest_framework_simplejwt.authentication import JWTAuthentication
 # from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
@@ -25,5 +26,6 @@ class ConnectionViewSetRelated(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    pagination_class = CustomPagination
     filterset_fields = ['status']
     search_fields = ['connection_id', 'installation_date', '^status', 'customer__first_name', 'customer__last_name']
