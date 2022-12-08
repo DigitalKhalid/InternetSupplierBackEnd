@@ -12,6 +12,7 @@ class Connection(models.Model):
         Customer, on_delete=models.CASCADE, related_name='connections', verbose_name='Customer')
     connection_id = models.CharField(
         'Connection ID', max_length=50, default=-1)
+    date_created = models.DateTimeField('Date Created', auto_now_add=True)
     subarea = models.ForeignKey(SubArea, on_delete=models.CASCADE, related_name='connections', verbose_name='Sub Area')
     installation_date = models.DateField('Installation Date', default=datetime.datetime.now)
     package = models.CharField('Package', max_length=25, null=True, blank=True)
