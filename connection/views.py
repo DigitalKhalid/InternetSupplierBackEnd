@@ -27,5 +27,5 @@ class ConnectionViewSetRelated(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     pagination_class = CustomPagination
-    filterset_fields = ['status']
+    filterset_fields = ['status', 'subscriptions__status', 'subscriptions__expiry_date']
     search_fields = ['connection_id', 'installation_date', '^status', 'customer__first_name', 'customer__last_name']

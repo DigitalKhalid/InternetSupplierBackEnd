@@ -1,11 +1,10 @@
 from django.db import models
 from customer.models import Customer
 from location.models import SubArea
+from product.models import Product
 import datetime
+from customizations.choices import StatusChoice
 
-class StatusChoice(models.TextChoices):
-    ACTIVE = 'Active'
-    INACTIVE = 'Inactive'
 
 class Connection(models.Model):
     customer = models.OneToOneField(
@@ -15,8 +14,8 @@ class Connection(models.Model):
     date_created = models.DateTimeField('Date Created', auto_now_add=True)
     subarea = models.ForeignKey(SubArea, on_delete=models.CASCADE, related_name='connections', verbose_name='Sub Area')
     installation_date = models.DateField('Installation Date', default=datetime.datetime.now)
-    package = models.CharField('Package', max_length=25, null=True, blank=True)
-    status = models.CharField('Status', max_length=20, choices=StatusChoice.choices, default=StatusChoice.ACTIVE)
+    package = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='connections', verbose_name='Package', null=True, blank=True)
+    status = models.CharField('Status', max_length=20, choices=StatusChoice.choices, default=StatusChoice.INACTIVE)
     new = models.BooleanField('New Connection', default=True)
 
     def __str__(self) -> str:

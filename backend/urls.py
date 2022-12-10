@@ -16,6 +16,7 @@ urlpatterns = [
     path('', include('customer.urls')),
     path('', include('connection.urls')),
     path('', include('location.urls')),
+    path('', include('product.urls')),
 
     # path('', include(router.urls)),
     # path('gettoken/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

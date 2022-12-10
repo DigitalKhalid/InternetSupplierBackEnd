@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'location',
     'product',
     'order',
+    'package',
 ]
 
 MIDDLEWARE = [

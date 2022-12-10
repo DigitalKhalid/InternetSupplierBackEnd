@@ -25,8 +25,8 @@ class Product(models.Model):
     sku = models.CharField('SKU', max_length=50)
     description = models.CharField('Description', max_length=200, null=True, blank=True)
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='products', verbose_name='Unit')
-    purchase_price = models.IntegerField('Purchase Price', null=True, blank=True)
-    sale_price = models.IntegerField('Sale Price', null=True, blank=True)
+    purchase_price = models.IntegerField('Purchase Price', default=0)
+    sale_price = models.IntegerField('Sale Price', default=0)
     date_created = models.DateField('Date Created', auto_now_add=True)
 
     def __str__(self):
