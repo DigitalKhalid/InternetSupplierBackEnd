@@ -11,8 +11,8 @@ class PackageSubscriptions(models.Model):
     package = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='subscriptions', verbose_name='Package')
     month = models.PositiveSmallIntegerField('Month', choices=MonthChoice.choices)
     year = models.IntegerField('Year', choices=YearChoices.year_choices())
-    activation_date = models.DateTimeField('Activation Date', auto_now=True)
-    expiry_date = models.DateTimeField('Expirty Date', default=datetime.datetime.now() + datetime.timedelta(30))
+    activation_date = models.DateField('Activation Date')
+    expiry_date = models.DateField('Expirty Date')
     status = models.CharField('Status', max_length=20, choices=StatusChoice.choices, default=StatusChoice.ACTIVE)
 
     def __str__(self) -> str:

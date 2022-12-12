@@ -5,6 +5,11 @@ class StatusChoice(models.TextChoices):
     ACTIVE = 'Active'
     INACTIVE = 'Inactive'
 
+class OrderStatusChoice(models.TextChoices):
+    PENDING = 'Pending'
+    PARTIAL = 'Partial'
+    COMPLETED = 'Completed'
+
 
 class MonthChoice(models.IntegerChoices):
     JANUARY = 1, 'January'

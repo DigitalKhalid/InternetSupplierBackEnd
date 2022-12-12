@@ -16,9 +16,10 @@ class ConnectionSerializerRelated(serializers.ModelSerializer):
     customer = CustomerSerializer(many=False)
     subarea = SubAreaSerializer(many=False)
     package = ProductSerializer(read_only=True)
-    # subscriptions = PackageSubscriptionSerializer(many=True)
+    expiry_date = serializers.DateField(read_only=True)
+    subscription_id = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Connection
         fields = ['id', 'connection_id', 'installation_date',
-                  'subarea', 'package', 'status', 'new', 'customer', 'subscriptions']
+                  'subarea', 'package', 'status', 'new', 'customer', 'expiry_date','subscription_id']
