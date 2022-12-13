@@ -1,5 +1,5 @@
 from .models import Order, OrderDetail
-from .serializers import OrderSerializer, OrderSerializerRelated, OrderDetailSerializer
+from .serializers import OrderSerializer, OrderSerializerRelated, OrderDetailSerializer, OrderDetailSerializerRelated
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
@@ -25,3 +25,12 @@ class OrderDetailViewSet(viewsets.ModelViewSet):
     queryset = OrderDetail.objects.all()
     serializer_class = OrderDetailSerializer
     permission_classes = [IsAuthenticated]
+
+class OrderDetailViewSetRelated(viewsets.ModelViewSet):
+    queryset = OrderDetail.objects.all()
+    serializer_class = OrderDetailSerializerRelated
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['order']
+    search_fields = ['product', 'product__title', 'product__sku']
+    ordering_fields = ['product', 'product__title', 'product__sku']

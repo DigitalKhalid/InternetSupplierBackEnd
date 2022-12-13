@@ -17,6 +17,7 @@ class OrderDetail(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='details', verbose_name='Order')
     product = models.ManyToManyField(Product, related_name='detials', verbose_name='Product')
     qty = models.IntegerField('Quantity', default=1)
+    sale_price = models.IntegerField('Sale_Price', default=0)
 
     def __str__(self):
         return f'{self.order} Detail'

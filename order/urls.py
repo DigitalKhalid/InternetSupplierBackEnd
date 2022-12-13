@@ -7,6 +7,7 @@ router = DefaultRouter()
 router.register('orderapi', views.OrderViewSet, basename='order')
 router.register('orderapirelated', views.OrderViewSetRelated, basename='orderrelated')
 router.register('orderdetailapi', views.OrderDetailViewSet, basename='orderdetail')
+router.register('orderdetailapirelated', views.OrderDetailViewSetRelated, basename='orderdetailrelated')
 
 urlpatterns = [
     path('', include(router.urls)),
