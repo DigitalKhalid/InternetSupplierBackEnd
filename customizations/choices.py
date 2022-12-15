@@ -10,6 +10,15 @@ class OrderStatusChoice(models.TextChoices):
     PARTIAL = 'Partial'
     COMPLETED = 'Completed'
 
+class PaymentTypeChoice(models.TextChoices):
+    DEBIT = 'Debit'
+    CREDIT = 'Credit'
+
+class VoucherTypeChoice(models.TextChoices):
+    PAYMENT = 'Payment'
+    RECEIPT = 'Receipt'
+    JOURNAL = 'Journal'
+    CONTRA = 'Contra'
 
 class MonthChoice(models.IntegerChoices):
     JANUARY = 1, 'January'

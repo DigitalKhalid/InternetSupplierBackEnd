@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Order, OrderDetail
 from connection.serializers import ConnectionSerializer
-from product.serializers import ProductSerializer
+from product.serializers import ProductSerializerRelated
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,7 +14,7 @@ class OrderDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class OrderDetailSerializerRelated(serializers.ModelSerializer):
-    product = ProductSerializer(read_only=True, many=True)
+    product = ProductSerializerRelated(read_only=True, many=False)
 
     class Meta:
         model = OrderDetail

@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from customizations.pagination import CustomPagination
-
+from django.db.models import F, Sum
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
@@ -18,7 +18,7 @@ class OrderViewSetRelated(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     pagination_class = CustomPagination
-    search_fields = ['order_id', 'date_created', 'connection__connection_id', 'value', 'status']
+    search_fields = ['order_id', 'date_created', 'connection__connection_id', 'status']
     ordering_fields = ['order_id', 'date_created', 'connection__connection_id', 'value', 'status']
 
 class OrderDetailViewSet(viewsets.ModelViewSet):

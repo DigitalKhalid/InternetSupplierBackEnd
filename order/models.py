@@ -11,11 +11,11 @@ class Order(models.Model):
     status = models.CharField('Status', max_length=20, choices=OrderStatusChoice.choices, default=OrderStatusChoice.PENDING)
 
     def __str__(self):
-        return f'{self.Connection} | {self.date_created} | {self.status}'
+        return f'{self.connection} | {self.date_created} | {self.status}'
 
 class OrderDetail(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='details', verbose_name='Order')
-    product = models.ManyToManyField(Product, related_name='detials', verbose_name='Product')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='detials', verbose_name='Product')
     qty = models.IntegerField('Quantity', default=1)
     sale_price = models.IntegerField('Sale_Price', default=0)
 
