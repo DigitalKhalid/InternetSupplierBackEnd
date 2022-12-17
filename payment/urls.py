@@ -4,7 +4,8 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 
-# router.register('orderapi', views.OrderViewSet, basename='order')
+router.register('paymentapirelated', views.PaymentViewSetRelated, basename='paymentrelated')
+router.register('paymentapi', views.PaymentViewSet, basename='payment')
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -20,10 +20,14 @@ class OrderDetailSerializerRelated(serializers.ModelSerializer):
         model = OrderDetail
         fields = '__all__'
 
+
+from payment.serializers import PaymentSerializer
 class OrderSerializerRelated(serializers.ModelSerializer):
     connection = ConnectionSerializer(read_only=True)
     details = OrderDetailSerializer(many=True, read_only=True)
+    payments = PaymentSerializer(many=True, read_only=True)
+    payment_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Order
-        fields = ['id', 'order_id', 'date_created', 'connection', 'value', 'status', 'details']
+        fields = ['id', 'order_id', 'date_created', 'connection', 'value', 'status', 'details', 'payments', 'payment_count']

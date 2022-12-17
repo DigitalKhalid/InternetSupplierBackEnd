@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from customizations.pagination import CustomPagination
-from django.db.models import F, Sum
+from django.db.models import F, Count
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
@@ -13,11 +13,13 @@ class OrderViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 class OrderViewSetRelated(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
+    queryset = Order.objects.all()\
+        .annotate(payment_count = Count(F('payments__id')))
     serializer_class = OrderSerializerRelated
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     pagination_class = CustomPagination
+    filterset_fields = ['id']
     search_fields = ['order_id', 'date_created', 'connection__connection_id', 'status']
     ordering_fields = ['order_id', 'date_created', 'connection__connection_id', 'value', 'status']
 
