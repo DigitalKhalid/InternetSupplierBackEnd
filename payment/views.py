@@ -1,5 +1,5 @@
 from .models import Payment
-from .serializers import PaymentSerializer, PaymentSerializerRelated
+from .serializers import PaymentSerializer, PaymentSerializerRelated, PaymentInvoiceSerializer
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
@@ -21,3 +21,10 @@ class PaymentViewSetRelated(viewsets.ModelViewSet):
     search_fields = ['payment_type', 'order__order_id', 'date_created']
     ordering_fields = ['payment_type', 'order__order_id', 'date_created']
     ordering = ('-date_created')
+
+class PaymentInvoiceViewSet(viewsets.ModelViewSet):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentInvoiceSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id']

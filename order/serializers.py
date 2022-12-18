@@ -21,6 +21,15 @@ class OrderDetailSerializerRelated(serializers.ModelSerializer):
         fields = '__all__'
 
 
+from connection.serializers import ConnectionInvoiceSerializer
+class OrderInvoiceSerializer(serializers.ModelSerializer):
+    connection = ConnectionInvoiceSerializer(read_only=True)
+    details = OrderDetailSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Order
+        fields = ['id', 'order_id', 'date_created', 'connection', 'value', 'status', 'details']
+
 from payment.serializers import PaymentSerializer
 class OrderSerializerRelated(serializers.ModelSerializer):
     connection = ConnectionSerializer(read_only=True)
