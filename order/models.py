@@ -7,7 +7,6 @@ class Order(models.Model):
     date_created = models.DateTimeField('Date Created', auto_now_add=True)
     order_id = models.CharField('Order ID', max_length=50, default=0)
     connection = models.ForeignKey(Connection, on_delete=models.CASCADE, related_name='orders', verbose_name='Connection')
-    value = models.IntegerField('Order Value', default=0)
     status = models.CharField('Status', max_length=20, choices=OrderStatusChoice.choices, default=OrderStatusChoice.PENDING)
 
     def __str__(self):

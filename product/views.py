@@ -26,6 +26,7 @@ class ProdcutViewSetRelated(viewsets.ModelViewSet):
     filterset_fields = ['catagory__title']
     search_fields = ['title', 'sku', 'description', 'catagory__title']
     ordering_fields = ['title', 'sku', 'description', 'sale_price']
+    ordering = 'catagory__title'
 
 
 class PackageList(viewsets.ModelViewSet):
@@ -35,7 +36,3 @@ class PackageList(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [OrderingFilter]
     ordering = 'title'
-
-    # def get_queryset(self):
-    #     package = Product.objects.filter(catagory__title='Package')
-    #     return package

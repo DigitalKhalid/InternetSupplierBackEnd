@@ -1,10 +1,10 @@
 from django.db import models
-# from connection.models import Connection
 from location.models import SubArea
+from customizations.choices import CustomerTypeChoice
 
 class Customer(models.Model):
     # user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='details', verbose_name='User', primary_key=True)
-    
+    customer_type = models.CharField('Type', max_length=15, choices=CustomerTypeChoice.choices, default=CustomerTypeChoice.INDIVIDUAL)
     first_name = models.CharField('First Name', max_length=50)
     last_name = models.CharField('Last Name', max_length=50)
     contact = models.CharField('Contact', max_length=50, blank=True)

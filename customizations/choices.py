@@ -1,6 +1,10 @@
 from django.db import models
 import datetime
 
+class CustomerTypeChoice(models.TextChoices):
+    INDIVIDUAL = 'Individual'
+    DEALER = 'Dealer'
+
 class StatusChoice(models.TextChoices):
     ACTIVE = 'Active'
     INACTIVE = 'Inactive'

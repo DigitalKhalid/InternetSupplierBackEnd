@@ -24,11 +24,11 @@ class OrderDetailSerializerRelated(serializers.ModelSerializer):
 from connection.serializers import ConnectionInvoiceSerializer
 class OrderInvoiceSerializer(serializers.ModelSerializer):
     connection = ConnectionInvoiceSerializer(read_only=True)
-    details = OrderDetailSerializer(many=True, read_only=True)
+    details = OrderDetailSerializerRelated(many=True, read_only=True)
 
     class Meta:
         model = Order
-        fields = ['id', 'order_id', 'date_created', 'connection', 'value', 'status', 'details']
+        fields = ['id', 'order_id', 'date_created', 'connection', 'status', 'details']
 
 from payment.serializers import PaymentSerializer
 class OrderSerializerRelated(serializers.ModelSerializer):
@@ -39,4 +39,17 @@ class OrderSerializerRelated(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'order_id', 'date_created', 'connection', 'value', 'status', 'details', 'payments', 'payment_count']
+        fields = ['id', 'order_id', 'date_created', 'connection', 'status', 'details', 'payments', 'payment_count']
+
+
+# Invoice
+class InvoiceSerializer(serializers.ModelSerializer):
+    connection = ConnectionInvoiceSerializer(read_only=True)
+    details = OrderDetailSerializerRelated(many=True, read_only=True)
+    payment_count = serializers.IntegerField(read_only=True)
+    payment_received = serializers.IntegerField(read_only=True)
+    # value = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = Order
+        fields = ['id', 'order_id', 'date_created', 'connection', 'status', 'details', 'payment_count', 'payment_received']
