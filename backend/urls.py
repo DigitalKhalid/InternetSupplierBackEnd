@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework.authtoken.views import obtain_auth_token
-from .auth import CustomAuthToken
+from customizations.auth import CustomAuthToken
 from customer import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
@@ -21,7 +21,8 @@ urlpatterns = [
     # path('refreshtoken/', TokenRefreshView.as_view(), name='token_refrsh'),
     # path('verifytoken/', TokenRefreshView.as_view(), name='token_Verify'),
 
-    path('gettoken/', obtain_auth_token),
+    # path('gettoken/', obtain_auth_token),
+    path('gettoken/', CustomAuthToken.as_view()),
     path('', include('rest_framework.urls', namespace='rest_framework')),
 ]
 

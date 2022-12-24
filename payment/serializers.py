@@ -11,10 +11,11 @@ from order.serializers import OrderSerializer, OrderInvoiceSerializer
 
 class PaymentSerializerRelated(serializers.ModelSerializer):
     order = OrderSerializer(read_only=True)
+    cashier_name = serializers.CharField(read_only=True)
 
     class Meta:
         model = Payment
-        fields = '__all__'
+        fields = ['id', 'date_created', 'payment_type', 'order', 'cashier_name', 'amount']
 
 class PaymentInvoiceSerializer(serializers.ModelSerializer):
     order = OrderInvoiceSerializer(read_only=True)

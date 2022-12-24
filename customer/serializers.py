@@ -15,6 +15,7 @@ class CustomerInvoiceSerializer(serializers.ModelSerializer):
         model = Customer
         fields = [
             'id',
+            'customer_type',
             'first_name',
             'last_name',
             'contact',
@@ -32,6 +33,7 @@ class CustomerSerializerRelated(serializers.ModelSerializer):
         model = Customer
         fields = [
             'id',
+            'customer_type',
             'first_name',
             'last_name',
             'contact',

@@ -11,6 +11,19 @@ class ConnectionSerializer(serializers.ModelSerializer):
         model = Connection
         fields = '__all__'
 
+class ConnectionListSerializer(serializers.ModelSerializer):
+    customer_name = serializers.CharField()
+
+    class Meta:
+        model = Connection
+        fields = ['id', 'connection_id', 'customer_name']
+
+
+class ActiveExpiredConnectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Connection
+        fields = ['id']
+
 
 class ConnectionSerializerRelated(serializers.ModelSerializer):
     customer = CustomerSerializer(many=False)

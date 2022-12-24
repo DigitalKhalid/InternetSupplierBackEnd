@@ -1,6 +1,12 @@
 from django.db import models
 import datetime
 
+class DesignationChoice(models.TextChoices):
+    OWNER = 'Owner'
+    MANAGER = 'Dealer'
+    SALESMAN = 'Sales Man'
+    CASHIER = 'Cashier'
+
 class CustomerTypeChoice(models.TextChoices):
     INDIVIDUAL = 'Individual'
     DEALER = 'Dealer'

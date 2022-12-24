@@ -19,7 +19,18 @@ class CustomerViewSet(viewsets.ModelViewSet):
 
 
 class CustomerViewSetRelated(viewsets.ModelViewSet):
-    queryset = Customer.objects.all()
+    queryset = Customer.objects.filter(customer_type='Individual')
+    serializer_class = CustomerSerializerRelated
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    pagination_class = CustomPagination
+    search_fields = ['first_name', 'last_name', 'street_address', 'contact', 'email', 'subarea__area__area', 'subarea__area__city__city', 'subarea__area__city__country__country']
+    ordering_fields = ['first_name', 'last_name', 'subarea__area__area']
+
+
+class DealerViewSetRelated(viewsets.ModelViewSet):
+    queryset = Customer.objects.filter(customer_type='Dealer')
     serializer_class = CustomerSerializerRelated
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
