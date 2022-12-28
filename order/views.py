@@ -1,11 +1,11 @@
 from .models import Order, OrderDetail
-from .serializers import OrderSerializer, OrderSerializerRelated, OrderDetailSerializer, OrderDetailSerializerRelated, InvoiceSerializer
+from .serializers import OrderSerializer, OrderSerializerRelated, OrderDetailSerializer, OrderDetailSerializerRelated, InvoiceSerializer, OrderSerialSerializer
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from customizations.pagination import CustomPagination
-from django.db.models import F, Count, Sum
+from django.db.models import F, Count, Sum, Max
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
@@ -22,6 +22,13 @@ class OrderViewSetRelated(viewsets.ModelViewSet):
     filterset_fields = ['id']
     search_fields = ['order_id', 'date_created', 'connection__connection_id', 'status']
     ordering_fields = ['order_id', 'date_created', 'connection__connection_id', 'value', 'status']
+
+# Get order serial to generate new order ID
+class OrderSerialViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerialSerializer
+    permission_classes = [IsAuthenticated]
+
 
 class OrderDetailViewSet(viewsets.ModelViewSet):
     queryset = OrderDetail.objects.all()

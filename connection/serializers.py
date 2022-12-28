@@ -24,6 +24,15 @@ class ActiveExpiredConnectionSerializer(serializers.ModelSerializer):
         model = Connection
         fields = ['id']
 
+class ActiveValidConnectionSerializer(serializers.ModelSerializer):
+    package = ProductSerializer(read_only=True)
+    expiry_date = serializers.DateField(read_only=True)
+    subscription_id = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = Connection
+        fields = ['id', 'connection_id', 'expiry_date', 'subscription_id', 'package']
+
 
 class ConnectionSerializerRelated(serializers.ModelSerializer):
     customer = CustomerSerializer(many=False)
@@ -35,7 +44,7 @@ class ConnectionSerializerRelated(serializers.ModelSerializer):
     class Meta:
         model = Connection
         fields = ['id', 'connection_id', 'installation_date',
-                  'subarea', 'package', 'status', 'new', 'customer', 'expiry_date','subscription_id']
+                  'subarea', 'package', 'status', 'renewal', 'archived', 'new', 'customer', 'expiry_date','subscription_id']
 
 
 from customer.serializers import CustomerInvoiceSerializer

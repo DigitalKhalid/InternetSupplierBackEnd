@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Connection
-from .serializers import ConnectionSerializer, ConnectionSerializerRelated, ConnectionListSerializer, ActiveExpiredConnectionSerializer
+from .serializers import ConnectionSerializer, ConnectionSerializerRelated, ConnectionListSerializer, ActiveExpiredConnectionSerializer, ActiveValidConnectionSerializer
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -47,6 +47,7 @@ class ConnectionViewSetRelated(viewsets.ModelViewSet):
                      '^status', 'customer__first_name', 'customer__last_name']
 
 
+# Get all active connections that have expired subscription
 class ActiveExpiredConnectionsViewSet(viewsets.ModelViewSet):
     queryset = Connection.objects.all()\
         .annotate(active_subscription=(Case(When(Q(subscriptions__activation_date__lte=datetime.date.today()) & Q(subscriptions__expiry_date__gte=datetime.date.today()), then='subscriptions__id'))))\
@@ -54,5 +55,18 @@ class ActiveExpiredConnectionsViewSet(viewsets.ModelViewSet):
         .filter(status='Active', expiry_date=None)
 
     serializer_class = ActiveExpiredConnectionSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+
+# Get all active connections that have valid subscription  
+class ActiveValidConnectionsViewSet(viewsets.ModelViewSet):
+    queryset = Connection.objects.all()\
+        .annotate(active_subscription=(Case(When(Q(subscriptions__activation_date__lte=datetime.date.today()) & Q(subscriptions__expiry_date__gte=datetime.date.today()), then='subscriptions__id'))))\
+        .annotate(expiry_date=Min(Case(When(active_subscription__isnull=True,then=None), When(active_subscription__isnull=False, then='subscriptions__expiry_date'))))\
+        .annotate(subscription_id=Min(Case(When(active_subscription__isnull=True,then=None), When(active_subscription__isnull=False, then='subscriptions__id'))))\
+        .filter(status='Active', expiry_date__isnull=False, renewal = False, archived = False)
+
+    serializer_class = ActiveValidConnectionSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]

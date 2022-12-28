@@ -1,10 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.conf.urls.static import static
-from django.conf import settings
 from rest_framework.authtoken.views import obtain_auth_token
 from customizations.auth import CustomAuthToken
-from customer import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 urlpatterns = [
@@ -15,6 +12,7 @@ urlpatterns = [
     path('', include('product.urls')),
     path('', include('order.urls')),
     path('', include('payment.urls')),
+    path('', include('settings.urls')),
 
     # path('', include(router.urls)),
     # path('gettoken/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

@@ -17,6 +17,8 @@ class Connection(models.Model):
     package = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='connections', verbose_name='Package', null=True, blank=True)
     status = models.CharField('Status', max_length=20, choices=StatusChoice.choices, default=StatusChoice.INACTIVE)
     new = models.BooleanField('New Connection', default=True)
+    archived = models.BooleanField('Archived', default=False)
+    renewal = models.BooleanField('Renewal', default=False)
 
     def __str__(self) -> str:
         return f'{self.connection_id}'
