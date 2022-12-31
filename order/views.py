@@ -1,16 +1,27 @@
 from .models import Order, OrderDetail
-from .serializers import OrderSerializer, OrderSerializerRelated, OrderDetailSerializer, OrderDetailSerializerRelated, InvoiceSerializer, OrderSerialSerializer
+from .serializers import OrderSerializer, OrderSerializerRelated, OrderDetailSerializer, OrderDetailSerializerRelated, InvoiceSerializer, OrderSerialSerializer, OrderPackageSerializer
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from customizations.pagination import CustomPagination
-from django.db.models import F, Count, Sum, Max
+from django.db.models import F, Count, Sum, Max, Q, Case, When
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
+
+
+class OrderPackageViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()\
+        .annotate(package = (Case(When(details__product__catagory__title = 'Package', then=F('details__product')))))\
+        .filter(package__isnull = False)\
+        .annotate(package_qty = F('details__qty'))\
+        .annotate(package_unit_value = F('details__product__unit__value'))
+    serializer_class = OrderPackageSerializer
+    permission_classes = [IsAuthenticated]
+
 
 class OrderViewSetRelated(viewsets.ModelViewSet):
     queryset = Order.objects.all()\

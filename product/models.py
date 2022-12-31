@@ -2,6 +2,7 @@ from django.db import models
 
 class Unit(models.Model):
     title = models.CharField('Unit', max_length=25)
+    value = models.IntegerField('Value', default=0)
 
     def __str__(self):
         return self.title

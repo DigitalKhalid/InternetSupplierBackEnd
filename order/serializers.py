@@ -1,12 +1,20 @@
 from rest_framework import serializers
 from .models import Order, OrderDetail
-from connection.serializers import ConnectionSerializer
+from connection.serializers import ConnectionSerializer, ConnectionSerializerRelated
 from product.serializers import ProductSerializerRelated
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = '__all__'
+
+class OrderPackageSerializer(serializers.ModelSerializer):
+    connection = ConnectionSerializerRelated(read_only=True)
+    package = serializers.CharField()
+
+    class Meta:
+        model = Order
+        fields = ['id', '']
 
 class OrderSerialSerializer(serializers.ModelSerializer):
     class Meta:

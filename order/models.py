@@ -19,4 +19,9 @@ class OrderDetail(models.Model):
     sale_price = models.IntegerField('Sale_Price', default=0)
 
     def __str__(self):
-        return f'{self.order} Detail'
+        return f'{self.product} | {self.order}'
+
+class OrderPackageDetail(models.Model):
+    package = models.OneToOneField(OrderDetail, on_delete=models.CASCADE, related_name='packages', verbose_name='Package')
+    valid_from = models.DateField('Valid From') 
+    valid_to = models.DateField('Valid To')

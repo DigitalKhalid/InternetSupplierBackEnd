@@ -13,6 +13,7 @@ urlpatterns = [
     path('', include('order.urls')),
     path('', include('payment.urls')),
     path('', include('settings.urls')),
+    path('', include('package.urls')),
 
     # path('', include(router.urls)),
     # path('gettoken/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
