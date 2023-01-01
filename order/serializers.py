@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Order, OrderDetail
+from .models import Order, OrderDetail, OrderPackageDetail
 from connection.serializers import ConnectionSerializer, ConnectionSerializerRelated
 from product.serializers import ProductSerializerRelated
 
@@ -8,13 +8,6 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = '__all__'
 
-class OrderPackageSerializer(serializers.ModelSerializer):
-    connection = ConnectionSerializerRelated(read_only=True)
-    package = serializers.CharField()
-
-    class Meta:
-        model = Order
-        fields = ['id', '']
 
 class OrderSerialSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,13 +19,18 @@ class OrderDetailSerializer(serializers.ModelSerializer):
         model = OrderDetail
         fields = '__all__'
 
+class OrderPackageDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderPackageDetail
+        fields = '__all__'
+
 class OrderDetailSerializerRelated(serializers.ModelSerializer):
     product = ProductSerializerRelated(read_only=True, many=False)
+    packagedetails = OrderPackageDetailSerializer(read_only=True)
 
     class Meta:
         model = OrderDetail
         fields = '__all__'
-
 
 from connection.serializers import ConnectionInvoiceSerializer
 class OrderInvoiceSerializer(serializers.ModelSerializer):

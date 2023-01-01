@@ -23,7 +23,7 @@ class ProdcutViewSetRelated(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     pagination_class = CustomPagination
-    filterset_fields = ['catagory__title']
+    filterset_fields = ['id', 'catagory__title']
     search_fields = ['title', 'sku', 'description', 'catagory__title']
     ordering_fields = ['title', 'sku', 'description', 'sale_price']
     ordering = 'catagory__title'

@@ -22,6 +22,9 @@ class OrderDetail(models.Model):
         return f'{self.product} | {self.order}'
 
 class OrderPackageDetail(models.Model):
-    package = models.OneToOneField(OrderDetail, on_delete=models.CASCADE, related_name='packages', verbose_name='Package')
-    valid_from = models.DateField('Valid From') 
-    valid_to = models.DateField('Valid To')
+    package = models.OneToOneField(OrderDetail, on_delete=models.CASCADE, related_name='packagedetails', verbose_name='Package')
+    valid_from = models.DateField('Valid From', null=True, blank=True) 
+    valid_to = models.DateField('Valid To', null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.package}'

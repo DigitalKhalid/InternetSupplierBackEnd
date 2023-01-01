@@ -1,5 +1,5 @@
-from .models import Order, OrderDetail
-from .serializers import OrderSerializer, OrderSerializerRelated, OrderDetailSerializer, OrderDetailSerializerRelated, InvoiceSerializer, OrderSerialSerializer, OrderPackageSerializer
+from .models import Order, OrderDetail, OrderPackageDetail
+from .serializers import OrderSerializer, OrderSerializerRelated, OrderDetailSerializer, OrderDetailSerializerRelated, InvoiceSerializer, OrderSerialSerializer, OrderPackageDetailSerializer
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
@@ -13,13 +13,9 @@ class OrderViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 
-class OrderPackageViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()\
-        .annotate(package = (Case(When(details__product__catagory__title = 'Package', then=F('details__product')))))\
-        .filter(package__isnull = False)\
-        .annotate(package_qty = F('details__qty'))\
-        .annotate(package_unit_value = F('details__product__unit__value'))
-    serializer_class = OrderPackageSerializer
+class OrderPackageDetailViewSet(viewsets.ModelViewSet):
+    queryset = OrderPackageDetail.objects.all()
+    serializer_class = OrderPackageDetailSerializer
     permission_classes = [IsAuthenticated]
 
 

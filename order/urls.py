@@ -10,6 +10,7 @@ router.register('orderdetailapi', views.OrderDetailViewSet, basename='orderdetai
 router.register('orderdetailapirelated', views.OrderDetailViewSetRelated, basename='orderdetailrelated')
 router.register('orderserialapi', views.OrderSerialViewSet, basename='orderserial')
 router.register('invoiceapi', views.InvoiceViewSet, basename='invoice')
+router.register('orderpackagedetailapi', views.OrderPackageDetailViewSet, basename='orderpackagedetail')
 
 urlpatterns = [
     path('', include(router.urls)),
