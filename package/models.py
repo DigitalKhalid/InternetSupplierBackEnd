@@ -11,8 +11,6 @@ class PackageSubscriptions(models.Model):
     connection = models.ForeignKey(Connection, on_delete=models.CASCADE, related_name='subscriptions', verbose_name='Connection')
     package = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='subscriptions', verbose_name='Package')
     payment = models.ForeignKey(Payment, on_delete=models.CASCADE, null=True, blank=True, related_name='subscriptions', verbose_name='Payment')
-    month = models.PositiveSmallIntegerField('Month', choices=MonthChoice.choices)
-    year = models.IntegerField('Year', choices=YearChoices.year_choices())
     activation_date = models.DateField('Activation Date')
     expiry_date = models.DateField('Expirty Date')
     temp_expiry_date = models.DateField('Temp. Expirty Date', null=True, blank=True)

@@ -39,3 +39,11 @@ class PackageListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'title', 'sale_price']
+
+
+class ProductListSerializer(serializers.ModelSerializer):
+    catagory_title = serializers.CharField()
+
+    class Meta:
+        model = Product
+        fields = ['id', 'title', 'sale_price', 'sku', 'catagory_title']

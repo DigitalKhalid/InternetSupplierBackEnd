@@ -15,7 +15,7 @@ class PaymentSerializerRelated(serializers.ModelSerializer):
 
     class Meta:
         model = Payment
-        fields = ['id', 'date_created', 'payment_type', 'order', 'cashier_name', 'amount']
+        fields = ['id', 'date_created', 'payment_type', 'order', 'cashier_name', 'amount', 'received_by']
 
 class PaymentInvoiceSerializer(serializers.ModelSerializer):
     order = OrderInvoiceSerializer(read_only=True)

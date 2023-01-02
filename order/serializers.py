@@ -44,7 +44,7 @@ class OrderInvoiceSerializer(serializers.ModelSerializer):
 from payment.serializers import PaymentSerializer
 class OrderSerializerRelated(serializers.ModelSerializer):
     connection = ConnectionSerializer(read_only=True)
-    details = OrderDetailSerializer(many=True, read_only=True)
+    details = OrderDetailSerializerRelated(many=True, read_only=True)
     payments = PaymentSerializer(many=True, read_only=True)
     payment_count = serializers.IntegerField(read_only=True)
 
