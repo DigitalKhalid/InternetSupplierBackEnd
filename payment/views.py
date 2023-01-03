@@ -16,13 +16,14 @@ class PaymentViewSet(viewsets.ModelViewSet):
 
 class PaymentViewSetRelated(viewsets.ModelViewSet):
     queryset = Payment.objects.all()\
-        .annotate(cashier_name =F('received_by__username'))
+        .annotate(cashier_name =F('received_by__username'))\
+        .annotate(connection_id = F('order__connection__connection_id'))
     serializer_class = PaymentSerializerRelated
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     pagination_class = CustomPagination
-    search_fields = ['payment_type', 'order__order_id', 'date_created', 'received_by__first_name', 'received_by__first_name']
-    ordering_fields = ['payment_type', 'order__order_id', 'date_created', 'received_by__first_name']
+    search_fields = ['payment_type', 'order__order_id', 'date_created', 'received_by__first_name', 'received_by__first_name', 'order__connection__connection_id']
+    ordering_fields = ['payment_type', 'order__order_id', 'date_created', 'received_by__first_name', 'order__connection__connection_id']
     ordering = ('-date_created')
 
 # class PaymentInvoiceViewSet(viewsets.ModelViewSet):

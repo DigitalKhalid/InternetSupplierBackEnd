@@ -35,7 +35,7 @@ class ConnectionViewSetRelated(viewsets.ModelViewSet):
         .annotate(active_subscription=(Case(When(Q(subscriptions__activation_date__lte=datetime.date.today()) & (Q(subscriptions__expiry_date__gte=datetime.date.today()) | Q(subscriptions__temp_expiry_date__gte=datetime.date.today())), then='subscriptions__id'))))\
         .annotate(expiry_date=Max('subscriptions__expiry_date'))\
         .annotate(temp_expiry_date=Max('subscriptions__temp_expiry_date'))\
-        .annotate(subscription_id=Min(Case(When(active_subscription__isnull=True,then=None), When(active_subscription__isnull=False, then='subscriptions__id'))))
+        .annotate(subscription_id=Max('subscriptions__id'))
         # .annotate(temp_expiry_date=Case(When(subscriptions__temporary=True, then=Max('subscriptions__expiry_date'))))
         # .annotate(expiry_date=Min(Case(When(active_subscription__isnull=True,then=None), When(active_subscription__isnull=False, then='subscriptions__expiry_date'))))\
 
