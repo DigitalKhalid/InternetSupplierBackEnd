@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Product
+from .models import Product, ProductCatagory, ProductType, Unit
 from .serializers import ProductSerializer, ProductSerializerRelated, UnitSerializer, ProductCatagorySerializer, ProductTypeSerializer, PackageListSerializer, ProductListSerializer
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
@@ -24,14 +24,14 @@ class ProductViewSetRelated(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     pagination_class = CustomPagination
-    filterset_fields = ['id', 'catagory__title']
-    search_fields = ['title', 'sku', 'description', 'catagory__title']
-    ordering_fields = ['title', 'sku', 'description', 'sale_price']
-    ordering = 'catagory__title'
+    filterset_fields = ['id', 'catagory__title', 'catagory__type__title']
+    search_fields = ['title', 'sku', 'description', 'catagory__title', 'catagory__type__title', 'unit__title', 'sale_price']
+    ordering_fields = ['title', 'sku', 'description', 'sale_price', 'unit__title']
+    ordering = 'title'
 
 
 class PackageList(viewsets.ModelViewSet):
-    queryset = Product.objects.filter(Q(catagory__title='Package'))
+    queryset = Product.objects.filter(Q(catagory__type__title='Package'))
     serializer_class = PackageListSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -40,10 +40,33 @@ class PackageList(viewsets.ModelViewSet):
 
 
 class ProductList(viewsets.ModelViewSet):
-    queryset = Product.objects.filter(~Q(catagory__title='Package'))\
-        .annotate(catagory_title = F('catagory__title'))
+    queryset = Product.objects.filter(~Q(catagory__type__title='Package'))\
+        .annotate(catagory_title = F('catagory__title'))\
+        .annotate(product_type = F('catagory__type__title'))
     serializer_class = ProductListSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     filter_backends = [OrderingFilter]
+    ordering = 'title'
+
+class CatagoryViewSet(viewsets.ModelViewSet):
+    queryset = ProductCatagory.objects.all()
+    serializer_class = ProductCatagorySerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['type__title']
+    search_fields = ['title', 'type__title']
+    ordering_fields = ['title', 'type__title']
+    ordering = 'title'
+
+class UnitViewSet(viewsets.ModelViewSet):
+    queryset = Unit.objects.all()
+    serializer_class = UnitSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['value']
+    search_fields = ['title']
+    ordering_fields = ['title']
     ordering = 'title'

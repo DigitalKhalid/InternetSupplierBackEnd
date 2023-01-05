@@ -5,7 +5,8 @@ from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from customizations.pagination import CustomPagination
-from django.db.models import F, Count, Sum, Max, Q, Case, When
+from django.db.models import F, Count, Sum, Max, Q, Case, When, Value
+from django.db.models.functions import Concat
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
@@ -55,8 +56,8 @@ class OrderDetailViewSetRelated(viewsets.ModelViewSet):
 class InvoiceViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()\
         .annotate(payment_count = Count(F('payments__id')))\
-        .annotate(payment_received = Sum(F('payments__amount')))
-        # .annotate(value = Sum(F('details__qty')*F('details__sale_price')))
+        .annotate(payment_received = Sum(F('payments__amount')))\
+        .annotate(cashier_name = Concat('payments__received_by__employees__first_name', Value(' '), 'payments__received_by__employees__last_name'))
     serializer_class = InvoiceSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]

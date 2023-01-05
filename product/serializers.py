@@ -15,6 +15,8 @@ class ProductTypeSerializer(serializers.ModelSerializer):
 
 
 class ProductCatagorySerializer(serializers.ModelSerializer):
+    # type_title = serializers.CharField(read_only=True)
+
     class Meta:
         model = ProductCatagory
         fields = '__all__'
@@ -27,13 +29,13 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializerRelated(serializers.ModelSerializer):
-    type = ProductTypeSerializer(read_only=True)
+    # type = ProductTypeSerializer(read_only=True)
     catagory = ProductCatagorySerializer(read_only=True)
     unit = UnitSerializer(read_only=True)
 
     class Meta:
         model = Product
-        fields = ['id', 'type', 'catagory', 'title', 'sku', 'description', 'unit', 'purchase_price', 'sale_price', 'date_created']
+        fields = ['id', 'catagory', 'title', 'sku', 'description', 'unit', 'purchase_price', 'sale_price', 'date_created']
 
 class PackageListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -42,8 +44,9 @@ class PackageListSerializer(serializers.ModelSerializer):
 
 
 class ProductListSerializer(serializers.ModelSerializer):
+    product_type = serializers.CharField()
     catagory_title = serializers.CharField()
 
     class Meta:
         model = Product
-        fields = ['id', 'title', 'sale_price', 'sku', 'catagory_title']
+        fields = ['id', 'title', 'sale_price', 'sku', 'product_type', 'catagory_title']

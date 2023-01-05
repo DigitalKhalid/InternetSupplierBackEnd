@@ -59,8 +59,9 @@ class InvoiceSerializer(serializers.ModelSerializer):
     details = OrderDetailSerializerRelated(many=True, read_only=True)
     payment_count = serializers.IntegerField(read_only=True)
     payment_received = serializers.IntegerField(read_only=True)
+    cashier_name = serializers.CharField(read_only=True)
     # value = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Order
-        fields = ['id', 'order_id', 'date_created', 'connection', 'status', 'details', 'payment_count', 'payment_received']
+        fields = ['id', 'order_id', 'date_created', 'connection', 'status', 'details', 'payment_count', 'payment_received', 'cashier_name']
