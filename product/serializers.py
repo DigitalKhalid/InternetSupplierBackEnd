@@ -15,7 +15,7 @@ class ProductTypeSerializer(serializers.ModelSerializer):
 
 
 class ProductCatagorySerializer(serializers.ModelSerializer):
-    # type_title = serializers.CharField(read_only=True)
+    type = ProductTypeSerializer(read_only=True)
 
     class Meta:
         model = ProductCatagory
