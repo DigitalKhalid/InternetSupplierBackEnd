@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from .models import Connection
-from .serializers import ConnectionSerializer, ConnectionSerializerRelated, ConnectionListSerializer, ActiveExpiredConnectionSerializer, ActiveValidConnectionSerializer
+from .serializers import ConnectionSerializer, ConnectionSerializerRelated, ConnectionListSerializer, ActiveExpiredConnectionSerializer, ActiveValidConnectionSerializer, ConnectionDashboardSerializer
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from django.db.models import Q, F, Case, When, Max, Min, Value
+from django.db.models import Q, F, Case, When, Max, Min, Value, Count
 from django.db.models.functions import Concat
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -21,6 +21,14 @@ class ConnectionViewSet(viewsets.ModelViewSet):
     serializer_class = ConnectionSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+
+
+class ConnectionDashboardViewSet(viewsets.ModelViewSet):
+    queryset = Connection.objects.aggregate(total_connections=Count('pk'))
+    serializer_class = ConnectionDashboardSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
 
 class ConnectionListViewSet(viewsets.ModelViewSet):
     queryset = Connection.objects.all()\

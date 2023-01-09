@@ -3,13 +3,36 @@ from rest_framework import serializers
 from .models import Connection
 from location.serializers import SubAreaSerializer
 from product.serializers import ProductSerializer
-from package.serializers import PackageSubscriptionSerializer
+# from package.serializers import PackageSubscriptionSerializer
+from django.db.models import Q, Count
 
 
 class ConnectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Connection
         fields = '__all__'
+
+class ConnectionDashboardSerializer(serializers.ModelSerializer):
+    archived_count = serializers.SerializerMethodField()
+    active_count = serializers.SerializerMethodField()
+    inactive_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Connection
+        fields = ['archived_count', 'active_count', 'inactive_count']
+
+    def get_archived_count(self, obj):
+        archivedcount = Connection.objects.all().aggregate(archived_count=Count('pk', filter=Q(archived = True)))
+        return archivedcount["archived_count"]
+
+    def get_active_count(self, obj):
+        activecount = Connection.objects.all().aggregate(active_count=Count('pk', filter=Q(status = 'Active', archived = False)))
+        return activecount["active_count"]
+    
+    def get_inactive_count(self, obj):
+        inactivecount = Connection.objects.all().aggregate(inactive_count=Count('pk', filter=Q(status = 'Inactive', archived = False)))
+        return inactivecount["inactive_count"]
+
 
 class ConnectionListSerializer(serializers.ModelSerializer):
     customer_name = serializers.CharField()
