@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Payment
 from django.db.models import Sum, Q
-from django.db.models.functions import ExtractMonth, ExtractYear
+from django.db.models.functions import ExtractMonth, ExtractYear, TruncMonth
 from datetime import date
 
 class PaymentSerializer(serializers.ModelSerializer):
@@ -9,6 +9,18 @@ class PaymentSerializer(serializers.ModelSerializer):
         model = Payment
         fields = '__all__'
 
+
+class PaymentHistoryDashboardSerializer(serializers.ModelSerializer):
+    payment_month = serializers.DateField()
+    total_amount = serializers.IntegerField()
+
+    class Meta:
+        model = Payment
+        fields = ['payment_month', 'total_amount']
+
+    # def get_payment_month(self, obj):
+    #     paymentmonth = Payment.objects.all().aggregate(payment_month=TruncMonth('date_created').values('month'))
+    #     return paymentmonth["payment_month"]
 
 class PaymentDashboardSerializer(serializers.ModelSerializer):
     payment_today = serializers.SerializerMethodField()

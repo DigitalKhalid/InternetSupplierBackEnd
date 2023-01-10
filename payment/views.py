@@ -1,11 +1,11 @@
 from .models import Payment
-from .serializers import PaymentSerializer, PaymentSerializerRelated, PaymentInvoiceSerializer, PaymentDashboardSerializer
+from .serializers import PaymentSerializer, PaymentSerializerRelated, PaymentInvoiceSerializer, PaymentDashboardSerializer, PaymentHistoryDashboardSerializer
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from customizations.pagination import CustomPagination
-from django.db.models.functions import Concat
+from django.db.models.functions import Concat, TruncMonth
 from django.db.models import Value, F, Case, When, Sum, Q
 from datetime import date
 
@@ -19,6 +19,12 @@ class PaymentViewSet(viewsets.ModelViewSet):
 class PaymentDashboardViewSet(viewsets.ModelViewSet):
     queryset = Payment.objects.aggregate(total_payment= Sum('amount'))
     serializer_class = PaymentDashboardSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class PaymentHistoryDashboardViewSet(viewsets.ModelViewSet):
+    queryset = Payment.objects.annotate(payment_month=TruncMonth('date_created__date')).values('payment_month').annotate(total_amount=Sum('amount'))
+    serializer_class = PaymentHistoryDashboardSerializer
     permission_classes = [IsAuthenticated]
 
 class PaymentViewSetRelated(viewsets.ModelViewSet):
