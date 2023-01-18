@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import os
 from datetime import timedelta
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-milav@9#3oab=(jae5h0ysfjpcn#+p_o5j6qxsq)c!=#dknyry'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -94,9 +98,9 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'internetserviceprovider',
-        'USER' : 'root',
-        'PASSWORD' : 'W@qasMomin123',
+        'NAME': env('DATABASE_NAME'),
+        'USER' : env('DATABASE_USER'),
+        'PASSWORD' : env('DATABASE_PASS'),
         'Host' : 'localhost',
         'Port' : '3306',
         'OPTIONS' : {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
@@ -150,11 +154,11 @@ REST_FRAMEWORK = {
 }
 
 # json web token settings
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME':timedelta(minutes=5), # to variate the validation of access token
-    'REFRESH_TOKEN_LIFETIME':timedelta(days=1), # to variate the validation of refresh token
-    'ROTATE_REFRESH_TOKEN':False # If true then on every refresh reqeust, new refresh token with new validation time will be issued along access token.
-}
+# SIMPLE_JWT = {
+#     'ACCESS_TOKEN_LIFETIME':timedelta(minutes=5), # to variate the validation of access token
+#     'REFRESH_TOKEN_LIFETIME':timedelta(days=1), # to variate the validation of refresh token
+#     'ROTATE_REFRESH_TOKEN':False # If true then on every refresh reqeust, new refresh token with new validation time will be issued along access token.
+# }
 
 # Cross Origin Resource Sharing Settings
 # CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
@@ -163,10 +167,12 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://192.168.100.5:3000',
 ] # If this is used, then not need to use `CORS_ALLOW_ALL_ORIGINS = True`
+
 CORS_ALLOWED_ORIGIN_REGEXES = [
     'http://localhost:3000',
     'http://192.168.100.5:3000',
 ]
+
 CORS_ALLOW_HEADERS = [
     "Content-Type",
     "Token",
@@ -204,3 +210,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+# SSL
+# SECURE_HSTS_SECONDS = 3600
+# SECURE_HSTS_INCLUDE_SUBDOMAIN = True
+# SECURE_HSTS_PRELOAD = True
+# SECURE_SSL_REDIRECT = True
+
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'Strict'
+SESSION_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
