@@ -151,6 +151,10 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PAGINATION_CLASS':
     #     'rest_framework.pagination.PageNumberPagination',
     #     'PAGE_SIZE':1
+
+    'DEFAULT_RENDERER_CLASSES':[
+        "rest_framework.renderers.JSONRenderer",
+    ]
 }
 
 # json web token settings
@@ -166,11 +170,16 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://192.168.100.5:3000',
+    'https://admin.clickpickcpl.net',
+    # 'http://admin.clickpickcpl.net',
+
 ] # If this is used, then not need to use `CORS_ALLOW_ALL_ORIGINS = True`
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
     'http://localhost:3000',
     'http://192.168.100.5:3000',
+    'https://admin.clickpickcpl.net',
+    # 'http://admin.clickpickcpl.net',
 ]
 
 CORS_ALLOW_HEADERS = [
